@@ -1,109 +1,147 @@
 const BASE_URL = 'http://localhost:8080';
 
+// Fetch all employees with optional search, pagination, and limit
 export const GetAllEmployees = async (search = '', page = 1, limit = 5) => {
-    const url =
-        `${BASE_URL}/api/employees?search=${search}&page=${page}&limit=${limit}`;
+    const url = `${BASE_URL}/api/employees?search=${search}&page=${page}&limit=${limit}`;
     const options = {
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json'
-        }
+            'Content-Type': 'application/json',
+        },
     };
     try {
         const result = await fetch(url, options);
-        const { data } = await result.json();
+        
+        if (!result.ok) {
+            const errorText = await result.text();
+            console.error('Error fetching employees:', errorText);
+            throw new Error(`Error: ${result.statusText}`);
+        }
 
+        const { data } = await result.json();
         return data;
     } catch (err) {
-        return err;
+        console.error('GetAllEmployees Error:', err);
+        throw err;
     }
-}
+};
 
+// Fetch employee details by ID
 export const GetEmployeeDetailsById = async (id) => {
-    const url =
-        `${BASE_URL}/api/employees/${id}`;
+    const url = `${BASE_URL}/api/employees/${id}`;
     const options = {
         method: 'GET',
         headers: {
-            'Content-Type': 'application/json'
-        }
+            'Content-Type': 'application/json',
+        },
     };
     try {
         const result = await fetch(url, options);
+        
+        if (!result.ok) {
+            const errorText = await result.text();
+            console.error('Error fetching employee details:', errorText);
+            throw new Error(`Error: ${result.statusText}`);
+        }
+
         const { data } = await result.json();
-        console.log(data);
+        console.log('Employee Details:', data);
         return data;
     } catch (err) {
-        return err;
+        console.error('GetEmployeeDetailsById Error:', err);
+        throw err;
     }
-}
+};
 
+// Delete an employee by ID
 export const DeleteEmployeeById = async (id) => {
-    const url =
-        `${BASE_URL}/api/employees/${id}`;
+    const url = `${BASE_URL}/api/employees/${id}`;
     const options = {
         method: 'DELETE',
         headers: {
-            'Content-Type': 'application/json'
-        }
+            'Content-Type': 'application/json',
+        },
     };
     try {
         const result = await fetch(url, options);
+        
+        if (!result.ok) {
+            const errorText = await result.text();
+            console.error('Error deleting employee:', errorText);
+            throw new Error(`Error: ${result.statusText}`);
+        }
+
         const data = await result.json();
-        console.log(data);
+        console.log('Delete Response:', data);
         return data;
     } catch (err) {
-        return err;
+        console.error('DeleteEmployeeById Error:', err);
+        throw err;
     }
-}
+};
 
-
+// Create a new employee
 export const CreateEmployee = async (empObj) => {
     const url = `${BASE_URL}/api/employees`;
-    console.log('url ', url);
-    // Create a FormData object
-    const formData = new FormData();
+    console.log('Creating Employee URL:', url);
 
-    // Append all fields to the FormData object
+    const formData = new FormData();
     for (const key in empObj) {
         formData.append(key, empObj[key]);
     }
-    // FormData handles the headers and content type
+
     const options = {
         method: 'POST',
-        body: formData
+        body: formData,
     };
+
     try {
         const result = await fetch(url, options);
+        
+        if (!result.ok) {
+            const errorText = await result.text();
+            console.error('Error creating employee:', errorText);
+            throw new Error(`Error: ${result.statusText}`);
+        }
+
         const data = await result.json();
+        console.log('Create Response:', data);
         return data;
     } catch (err) {
-        return err;
+        console.error('CreateEmployee Error:', err);
+        throw err;
     }
 };
 
+// Update employee details by ID
 export const UpdateEmployeeById = async (empObj, id) => {
     const url = `${BASE_URL}/api/employees/${id}`;
-    console.log('url ', url);
-    // Create a FormData object
-    const formData = new FormData();
+    console.log('Updating Employee URL:', url);
 
-    // Append all fields to the FormData object
+    const formData = new FormData();
     for (const key in empObj) {
         formData.append(key, empObj[key]);
     }
-    // FormData handles the headers and content type
+
     const options = {
         method: 'PUT',
-        body: formData
+        body: formData,
     };
+
     try {
         const result = await fetch(url, options);
+        
+        if (!result.ok) {
+            const errorText = await result.text();
+            console.error('Error updating employee:', errorText);
+            throw new Error(`Error: ${result.statusText}`);
+        }
+
         const data = await result.json();
-        console.log('<---update--> ', data);
+        console.log('<---Update Response--->', data);
         return data;
     } catch (err) {
-        return err;
+        console.error('UpdateEmployeeById Error:', err);
+        throw err;
     }
 };
-
