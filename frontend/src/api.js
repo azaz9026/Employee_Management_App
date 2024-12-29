@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:8080';
+const BASE_URL = 'https://employee-management-app-peach.vercel.app';
 
 // Fetch all employees with optional search, pagination, and limit
 export const GetAllEmployees = async (search = '', page = 1, limit = 5) => {
